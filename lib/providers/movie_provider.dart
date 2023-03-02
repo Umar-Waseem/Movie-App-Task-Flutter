@@ -3,25 +3,15 @@ import 'package:movie_app_task/api/api_service.dart';
 import 'package:movie_app_task/models/movie_model.dart';
 import 'package:movie_app_task/widgets/movie_title_widget.dart';
 
-import '../constants/image_constants.dart';
 import '../models/response_model.dart';
 
 class MovieProvider with ChangeNotifier {
   List<MovieTitleWidget> moviesToShowList = [
     MovieTitleWidget(
-      movieImage: freeGuyMovie,
-      movieTitle: "Free Guy",
-      onPress: () {},
-    ),
-    MovieTitleWidget(
-      movieImage: freeGuyMovie,
-      movieTitle: "Free Guy",
-      onPress: () {},
-    ),
-    MovieTitleWidget(
-      movieImage: freeGuyMovie,
-      movieTitle: "Free Guy",
-      onPress: () {},
+      movie: MovieModel(
+        original_title: "Free Guy",
+        backdrop_path: "/hZkgoQYus5vegHoetLkCJzb17zJ.jpg",
+      ),
     ),
   ];
 
@@ -43,9 +33,7 @@ class MovieProvider with ChangeNotifier {
     _searchedMoviesWidgetsList = movieModelsList
         .map(
           (movie) => MovieTitleWidget(
-            movieImage: movie.backdrop_path,
-            movieTitle: movie.original_title,
-            onPress: () {},
+            movie: movie,
           ),
         )
         .toList();

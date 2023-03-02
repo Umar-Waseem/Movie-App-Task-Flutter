@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
 import '../models/movie_model.dart';
 
 class MovieTitleWidget extends StatelessWidget {
-  const MovieTitleWidget(
-      {Key? key,
-      required this.movieImage,
-      required this.movieTitle,
-      this.onPress})
-      : super(key: key);
+  const MovieTitleWidget({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
-  final String movieImage;
-  final String movieTitle;
-  final Function()? onPress;
+  final MovieModel movie;
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: onPress,
+      onTap: () {
+        context.pushNamed(
+          '/movieDetail',
+          extra: movie,
+        );
+      },
       child: Container(
         alignment: Alignment.center,
         height: screenHeight * 0.22,
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         decoration: BoxDecoration(
-          color: movieImage.isNotEmpty ? Colors.transparent : Colors.grey,
-          image: movieImage.isNotEmpty
+          color: movie.backdrop_path!.isNotEmpty
+              ? Colors.transparent
+              : Colors.grey,
+          image: movie.backdrop_path!.isNotEmpty
               ? DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(baseImageUrl + movieImage),
+                  image: NetworkImage(baseImageUrl + movie.backdrop_path!),
                 )
               : null,
           borderRadius: const BorderRadius.all(
@@ -40,7 +44,7 @@ class MovieTitleWidget extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (movieImage.isNotEmpty)
+            if (movie.backdrop_path!.isNotEmpty)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -63,7 +67,7 @@ class MovieTitleWidget extends StatelessWidget {
               child: SizedBox(
                 width: 300,
                 child: Text(
-                  movieTitle,
+                  movie.original_title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,

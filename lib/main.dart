@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app_task/routes/screen_routes.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/movie_provider.dart';
-import 'screens/starting_screen.dart';
 import 'themes/app_theme.dart';
 
 void main() {
@@ -20,10 +20,12 @@ class MyApp extends StatelessWidget {
           create: (context) => MovieProvider(),
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Movie App',
-        home: const StartingScreen(),
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
+        routeInformationProvider: router.routeInformationProvider,
         theme: themeData,
       ),
     );

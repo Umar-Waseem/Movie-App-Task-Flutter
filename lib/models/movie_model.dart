@@ -5,19 +5,19 @@ const baseImageUrl = "https://image.tmdb.org/t/p/w500";
 
 class MovieModel {
   final String original_title;
-  final String backdrop_path;
-  final String release_date;
-  final String overview;
-  final String poster_path;
-  final List<dynamic> genre_ids;
+  final String? backdrop_path;
+  final String? release_date;
+  final String? overview;
+  final String? poster_path;
+  final List<dynamic>? genre_ids;
 
   MovieModel({
     required this.original_title,
-    required this.backdrop_path,
-    required this.release_date,
-    required this.overview,
-    required this.genre_ids,
-    required this.poster_path,
+    this.backdrop_path,
+    this.release_date,
+    this.overview,
+    this.genre_ids,
+    this.poster_path,
   });
 
   Map<String, dynamic> toMap() {

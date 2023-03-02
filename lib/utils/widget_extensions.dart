@@ -39,6 +39,13 @@ extension WidgetExtension on Widget {
       child: this,
     );
   }
+
+  Widget paddingAll(double padding){
+    return Padding(
+      padding: EdgeInsets.all(padding),
+      child: this,
+    );
+  }
 }
 
 extension SizedBoxExtension on Text {
@@ -55,6 +62,7 @@ extension SizedBoxExtension on Text {
     String? semanticsLabel,
     TextWidthBasis? textWidthBasis,
     TextStyle? style,
+    
   }) {
     return Text(data ?? '',
         key: key ?? this.key,
