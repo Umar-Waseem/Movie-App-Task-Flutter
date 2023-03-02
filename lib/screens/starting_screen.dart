@@ -62,7 +62,7 @@ class _StartingScreenState extends State<StartingScreen>
       body: Consumer<MovieProvider>(
         builder: (context, movieProvider, child) => Center(
           child: ListView(
-            children: movieProvider.allMovies,
+            children: movieProvider.moviesToShowList,
           ),
         ),
       ),

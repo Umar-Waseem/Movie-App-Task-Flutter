@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
+import '../models/movie_model.dart';
+
 class MovieTitleWidget extends StatelessWidget {
   const MovieTitleWidget(
       {Key? key,
@@ -24,10 +26,13 @@ class MovieTitleWidget extends StatelessWidget {
         height: screenHeight * 0.22,
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.contain,
-            image: AssetImage(movieImage),
-          ),
+          color: movieImage.isNotEmpty ? Colors.transparent : Colors.grey,
+          image: movieImage.isNotEmpty
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(baseImageUrl + movieImage),
+                )
+              : null,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -35,37 +40,37 @@ class MovieTitleWidget extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Image.asset(
-            //   movieImage,
-            //   fit: BoxFit.contain,
-            // ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: screenHeight * 0.1,
-                width: screenWidth * 0.8,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black,
-                    ],
+            if (movieImage.isNotEmpty)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: screenHeight * 0.1,
+                  width: screenWidth * 0.8,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black,
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
             Positioned(
               bottom: 0,
-              child: Text(
-                movieTitle,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ).paddingOnly(20),
+              child: SizedBox(
+                width: 300,
+                child: Text(
+                  movieTitle,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ).paddingOnly(20),
+              ),
             ),
           ],
         ),
