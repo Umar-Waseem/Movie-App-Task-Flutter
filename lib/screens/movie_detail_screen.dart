@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_app_task/providers/movie_provider.dart';
 import 'package:movie_app_task/themes/colors.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
@@ -22,8 +23,14 @@ class MovieDetailScreen extends StatefulWidget {
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   late String videoId;
-  late final String videoBaseUrl;
-  late final YoutubePlayerController controller;
+  String videoBaseUrl = "";
+  YoutubePlayerController controller = YoutubePlayerController(
+    initialVideoId: '',
+    flags: const YoutubePlayerFlags(
+      autoPlay: true,
+      mute: false,
+    ),
+  );
   // VideoPlayerController.network(videoBaseUrl);
 
   @override
@@ -40,6 +47,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     final movieProvider = Provider.of<MovieProvider>(context, listen: false);
     videoId = await movieProvider.getMovieTrailer(widget.movie.id);
     videoBaseUrl = 'https://www.youtube.com/watch?v=$videoId';
+
+    if (videoBaseUrl.isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Trailer Not Available',
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
 
     controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -69,6 +84,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        actions: [
+          if (showVideo)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  showVideo = false;
+                });
+              },
+              icon: const Icon(Icons.clear),
+            ),
+        ],
         elevation: 0,
         centerTitle: false,
         title: const Text(
@@ -85,9 +111,21 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         child: Column(
           children: [
             showVideo
-                ? YoutubePlayer(
-                    controller: controller,
-                    aspectRatio: 0.6,
+                ? Stack(
+                    children: [
+                      YoutubePlayer(
+                        controller: controller,
+                        aspectRatio: 0.6,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showVideo = false;
+                          });
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                    ],
                   )
                 : Stack(
                     alignment: Alignment.bottomCenter,
