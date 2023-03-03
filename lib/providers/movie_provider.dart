@@ -9,6 +9,8 @@ import '../models/response_model.dart';
 import 'dart:math' as math;
 
 class MovieProvider with ChangeNotifier {
+  bool loading = false;
+
   List<MovieTitleWidget> moviesToShowList = [];
 
   List<MovieTitleWidget> get allMovies => moviesToShowList;
@@ -18,6 +20,8 @@ class MovieProvider with ChangeNotifier {
   List<MovieTitleWidget> get searchedMovies => _searchedMoviesWidgetsList;
 
   void searchMovies(String query) async {
+    loading = true;
+
     ApiResponse? response = await ApiService.executeRequest(
         [query], RequestType.GET, EndPoint.MOVIE_SEARCH);
 
@@ -35,6 +39,8 @@ class MovieProvider with ChangeNotifier {
         .toList();
 
     moviesToShowList = _searchedMoviesWidgetsList;
+
+    loading = false;
 
     notifyListeners();
   }

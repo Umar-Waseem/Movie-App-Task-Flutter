@@ -66,15 +66,22 @@ class _StartingScreenState extends State<StartingScreen>
       backgroundColor: kAppBarBackgroundColor,
       body: Consumer<MovieProvider>(
         builder: (context, movieProvider, child) => Center(
-          child: movieProvider.moviesToShowList.isEmpty
+          child: movieProvider.loading
               ? const CupertinoActivityIndicator(
                   animating: true,
                   color: kNavBarColor,
                   radius: 15,
                 )
-              : ListView(
-                  children: movieProvider.moviesToShowList,
-                ),
+              : movieProvider.moviesToShowList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "No Results Found",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
+                    )
+                  : ListView(
+                      children: movieProvider.moviesToShowList,
+                    ),
         ),
       ),
       bottomSheet: const CustomNavBar(),

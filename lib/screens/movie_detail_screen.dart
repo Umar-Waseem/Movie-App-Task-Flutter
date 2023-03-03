@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_app_task/providers/movie_provider.dart';
 import 'package:movie_app_task/themes/colors.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
@@ -173,7 +174,12 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             SizedBox(
                               width: 260,
                               child: CupertinoButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.pushNamed(
+                                    '/ticketsBooking',
+                                    extra: widget.movie,
+                                  );
+                                },
                                 color: kLightBlue,
                                 pressedOpacity: 0.8,
                                 borderRadius: BorderRadius.circular(10),
