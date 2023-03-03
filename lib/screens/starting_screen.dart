@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app_task/providers/movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../themes/colors.dart';
 import '../widgets/app_bar/custom_app_bar.dart';
+import '../widgets/nav_bar/nav_bar_widget.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({Key? key}) : super(key: key);
@@ -25,9 +27,12 @@ class _StartingScreenState extends State<StartingScreen>
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0.4, 0),
+      begin: const Offset(0.2, 0),
       end: const Offset(0, 0),
     ).animate(_animationController);
+
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    movieProvider.getUpcomingMovies();
   }
 
   @override
@@ -61,11 +66,18 @@ class _StartingScreenState extends State<StartingScreen>
       backgroundColor: kAppBarBackgroundColor,
       body: Consumer<MovieProvider>(
         builder: (context, movieProvider, child) => Center(
-          child: ListView(
-            children: movieProvider.moviesToShowList,
-          ),
+          child: movieProvider.moviesToShowList.isEmpty
+              ? const CupertinoActivityIndicator(
+                  animating: true,
+                  color: kNavBarColor,
+                  radius: 15,
+                )
+              : ListView(
+                  children: movieProvider.moviesToShowList,
+                ),
         ),
       ),
+      bottomSheet: const CustomNavBar(),
     );
   }
 }

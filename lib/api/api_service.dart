@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -13,8 +14,9 @@ enum RequestType {
 
 class ApiService {
   static Future<ApiResponse?> executeRequest(
-    String searchQuery,
-    RequestType requestType, {
+    List<String> searchQuery,
+    RequestType requestType,
+    EndPoint endPoint, {
     dynamic data,
   }) async {
     ApiResponse? response;
@@ -24,20 +26,20 @@ class ApiService {
     try {
       switch (requestType) {
         case RequestType.GET:
-          log("Get request on: ${baseUrl(searchQuery)}");
-          result = await dio.get(baseUrl(searchQuery));
+          log("Get request on: ${baseUrl([...searchQuery], endPoint)}");
+          result = await dio.get(baseUrl([...searchQuery], endPoint));
           response = ApiResponse(
             status: result.statusCode,
             body: result.data,
-            url: baseUrl(searchQuery),
+            url: baseUrl([...searchQuery], endPoint),
           );
           break;
         case RequestType.POST:
-          result = await dio.post(baseUrl(searchQuery), data: data);
+          result = await dio.post(baseUrl([...searchQuery], endPoint), data: jsonEncode(data));
           response = ApiResponse(
             status: result.statusCode,
             body: result.data,
-            url: baseUrl(searchQuery).toString(),
+            url: baseUrl([...searchQuery], endPoint).toString(),
           );
           break;
         default:

@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app_task/providers/movie_provider.dart';
 import 'package:movie_app_task/themes/colors.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
+import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../models/movie_model.dart';
 
@@ -18,6 +21,47 @@ class MovieDetailScreen extends StatefulWidget {
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  late String videoId;
+  late final String videoBaseUrl;
+  late final YoutubePlayerController controller;
+  // VideoPlayerController.network(videoBaseUrl);
+
+  @override
+  void initState() {
+    super.initState();
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    if (movieProvider.genreChips.isNotEmpty) {
+      movieProvider.genreChips.clear();
+    }
+    movieProvider.getMovieGenres(widget.movie);
+  }
+
+  void showTrailer() async {
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    videoId = await movieProvider.getMovieTrailer(widget.movie.id);
+    videoBaseUrl = 'https://www.youtube.com/watch?v=$videoId';
+
+    controller = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+
+    setState(() {
+      showVideo = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  bool showVideo = false;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -40,82 +84,93 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: baseImageUrl + widget.movie.poster_path!,
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => const SizedBox.shrink(),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: screenHeight * 0.6,
-                    width: screenWidth,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Column(
+            showVideo
+                ? YoutubePlayer(
+                    controller: controller,
+                    aspectRatio: 0.6,
+                  )
+                : Stack(
+                    alignment: Alignment.bottomCenter,
                     children: [
-                      Text(
-                        "In Theaters ${widget.movie.release_date?.toMonthDayYear}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      if (widget.movie.poster_path!.isNotEmpty)
+                        CachedNetworkImage(
+                          imageUrl: baseImageUrl + widget.movie.poster_path!,
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) {
+                            print(error);
+                            return const SizedBox.shrink();
+                          },
                         ),
-                      ),
-                      20.ph,
-                      SizedBox(
-                        width: 260,
-                        child: CupertinoButton(
-                          onPressed: () {},
-                          color: kLightBlue,
-                          pressedOpacity: 0.8,
-                          borderRadius: BorderRadius.circular(10),
-                          child: const Text("Get Tickets"),
-                        ),
-                      ),
-                      20.ph,
-                      Container(
-                        width: 260,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kLightBlue),
-                        ),
-                        child: CupertinoButton(
-                          onPressed: () {},
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.play_arrow),
-                              5.pw,
-                              const Text("Watch Trailer"),
-                            ],
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: screenHeight * 0.6,
+                          width: screenWidth,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black,
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      40.ph,
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              "In Theaters ${widget.movie.release_date?.toMonthDayYear}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            20.ph,
+                            SizedBox(
+                              width: 260,
+                              child: CupertinoButton(
+                                onPressed: () {},
+                                color: kLightBlue,
+                                pressedOpacity: 0.8,
+                                borderRadius: BorderRadius.circular(10),
+                                child: const Text("Get Tickets"),
+                              ),
+                            ),
+                            20.ph,
+                            Container(
+                              width: 260,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: kLightBlue),
+                              ),
+                              child: CupertinoButton(
+                                onPressed: () {
+                                  showTrailer();
+                                },
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.play_arrow),
+                                    5.pw,
+                                    const Text("Watch Trailer"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            40.ph,
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -125,26 +180,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
                 16.ph,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Chip(
-                      label: Text("Action"),
-                      backgroundColor: Colors.red,
-                    ),
-                    Chip(
-                      label: Text("Thriller"),
-                      backgroundColor: Colors.blue,
-                    ),
-                    Chip(
-                      label: Text("Science"),
-                      backgroundColor: Colors.green,
-                    ),
-                    Chip(
-                      label: Text("Fiction"),
-                      backgroundColor: Colors.yellow,
-                    ),
-                  ],
+                Consumer<MovieProvider>(
+                  builder: (context, movieProvider, child) => Wrap(
+                    spacing: 10,
+                    children: movieProvider.genreChips,
+                  ),
                 ),
                 30.ph,
                 const Text(

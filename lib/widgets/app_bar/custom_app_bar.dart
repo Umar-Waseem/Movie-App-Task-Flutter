@@ -42,7 +42,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         },
         child: Visibility(
           visible: widget.isSearchBarVisible,
-          replacement: const Text('Watch').paddingLeft(0),
+          replacement: const Text('Upcoming Movies').paddingLeft(0),
           child: TextField(
             controller: _searchController,
             onSubmitted: (value) {
