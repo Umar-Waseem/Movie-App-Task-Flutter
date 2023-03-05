@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_app_task/providers/movie_provider.dart';
 import 'package:movie_app_task/utils/connection.dart';
-import 'package:movie_app_task/widgets/movie_overview_widget.dart';
+import 'package:movie_app_task/ui/widgets/movie_overview_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../models/movie_model.dart';
+import '../../models/movie_model.dart';
 
 import '../widgets/movie_poster_display.dart';
 import '../widgets/trailer_player.dart';

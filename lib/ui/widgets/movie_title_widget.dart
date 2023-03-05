@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:movie_app_task/utils/connection.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
-import '../models/movie_model.dart';
+import '../../models/movie_model.dart';
 
 class MovieTitleWidget extends StatelessWidget {
   const MovieTitleWidget({

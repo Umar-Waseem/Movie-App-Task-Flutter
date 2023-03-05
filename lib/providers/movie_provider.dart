@@ -7,7 +7,7 @@ import 'package:movie_app_task/constants/api_constants.dart';
 import 'package:movie_app_task/models/movie_model.dart';
 import 'package:movie_app_task/storage/dao.dart';
 import 'package:movie_app_task/utils/connection.dart';
-import 'package:movie_app_task/widgets/movie_title_widget.dart';
+import 'package:movie_app_task/ui/widgets/movie_title_widget.dart';
 
 import '../models/response_model.dart';
 

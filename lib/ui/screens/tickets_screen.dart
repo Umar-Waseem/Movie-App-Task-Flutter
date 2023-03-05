@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app_task/models/movie_model.dart';
-import 'package:movie_app_task/themes/colors.dart';
+import 'package:movie_app_task/ui/themes/colors.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
 import '../widgets/seats_option_card_widget.dart';

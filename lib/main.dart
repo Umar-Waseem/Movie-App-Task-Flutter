@@ -5,7 +5,7 @@ import 'package:movie_app_task/utils/connection.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/movie_provider.dart';
-import 'themes/app_theme.dart';
+import 'ui/themes/app_theme.dart';
 
 Future<void> main() async {
   await dotenv.load();

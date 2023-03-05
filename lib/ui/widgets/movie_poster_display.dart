@@ -6,7 +6,7 @@ import 'package:movie_app_task/utils/connection.dart';
 import 'package:movie_app_task/utils/utility_extensions.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
-import '../models/movie_model.dart';
+import '../../models/movie_model.dart';
 import '../themes/colors.dart';
 
 class MoviePosterDisplay extends StatelessWidget {

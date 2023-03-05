@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_app_task/screens/tickets_screen.dart';
+import 'package:movie_app_task/ui/screens/tickets_screen.dart';
 
 import '../models/movie_model.dart';
-import '../screens/movie_detail_screen.dart';
-import '../screens/starting_screen.dart';
+import '../ui/screens/movie_detail_screen.dart';
+import '../ui/screens/starting_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: [

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 import 'package:provider/provider.dart';
 
-import '../models/movie_model.dart';
-import '../providers/movie_provider.dart';
+import '../../models/movie_model.dart';
+import '../../providers/movie_provider.dart';
 
 class MovieOverview extends StatefulWidget {
   const MovieOverview({Key? key, required this.movie}) : super(key: key);
