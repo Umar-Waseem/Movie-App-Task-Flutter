@@ -1,8 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
-const apiKey = "732174632c041bebcf360bf7f71fff22";
+import "package:flutter_dotenv/flutter_dotenv.dart";
 
-// https://api.themoviedb.org/3/search/movie?api_key=732174632c041bebcf360bf7f71fff22&language=en-US&query=avengers&page=1&include_adult=false
+// get apiKey from .env file
+String apiKey = dotenv.env['apiKey']!;
 
 enum EndPoint { MOVIE_SEARCH, MOVIE_GENRES, MOVIE_UPCOMING, MOVIE_TRAILER }
 

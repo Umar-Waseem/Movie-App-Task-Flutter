@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_app_task/providers/movie_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
-import '../utils/connection.dart';
 
 class TrailerPlayer extends StatefulWidget {
   const TrailerPlayer({super.key, required this.trailerId});
@@ -21,10 +17,7 @@ class _TrailerPlayerState extends State<TrailerPlayer> {
   @override
   void initState() {
     super.initState();
-    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    if (movieProvider.genreChips.isNotEmpty) {
-      movieProvider.genreChips.clear();
-    }
+
     initializeTrailer();
   }
 
@@ -37,26 +30,24 @@ class _TrailerPlayerState extends State<TrailerPlayer> {
   );
 
   void initializeTrailer() async {
+    String videoId = widget.trailerId;
+    String videoBaseUrl = "https://www.youtube.com/watch?v=$videoId";
 
-      String videoId = widget.trailerId;
-      String videoBaseUrl = "https://www.youtube.com/watch?v=$videoId";
-
-      if (videoId.isEmpty) {
-        Fluttertoast.showToast(
-          msg: 'Trailer Not Available',
-          backgroundColor: Colors.red,
-        );
-        return;
-      }
-
-      controller = YoutubePlayerController(
-        initialVideoId: videoId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: true,
-          mute: false,
-        ),
+    if (videoId.isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Trailer Not Available',
+        backgroundColor: Colors.red,
       );
-    
+      return;
+    }
+
+    controller = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
   }
 
   @override

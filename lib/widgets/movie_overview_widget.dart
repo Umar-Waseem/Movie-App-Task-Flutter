@@ -18,6 +18,8 @@ class _MovieOverviewState extends State<MovieOverview> {
   @override
   void initState() {
     super.initState();
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    movieProvider.getMovieGenres(widget.movie);
   }
 
   @override
@@ -33,7 +35,6 @@ class _MovieOverviewState extends State<MovieOverview> {
         16.ph,
         Consumer<MovieProvider>(
           builder: (context, movieProvider, child) {
-            movieProvider.getMovieGenres(widget.movie);
             return Wrap(
               spacing: 10,
               children: movieProvider.genreChips,

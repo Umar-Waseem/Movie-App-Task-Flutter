@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app_task/routes/screen_routes.dart';
 import 'package:movie_app_task/utils/connection.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,9 @@ import 'package:provider/provider.dart';
 import 'providers/movie_provider.dart';
 import 'themes/app_theme.dart';
 
-void main() async {
+Future<void> main() async {
+  await dotenv.load();
+
   WidgetsFlutterBinding.ensureInitialized();
   ConnectionUtility.init();
 
