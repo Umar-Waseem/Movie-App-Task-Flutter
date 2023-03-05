@@ -29,10 +29,8 @@ class MovieProvider with ChangeNotifier {
       ApiResponse? response = await ApiService.executeRequest(
           [query], RequestType.GET, EndPoint.MOVIE_SEARCH);
 
-      print("Results: ${response!.body["results"]}");
-
       List<MovieModel> movieModelsList =
-          MovieModel.toList(response.body["results"]);
+          MovieModel.toList(response!.body["results"]);
 
       _searchedMoviesWidgetsList = movieModelsList
           .map(
@@ -68,9 +66,8 @@ class MovieProvider with ChangeNotifier {
 
       ApiResponse? response = await ApiService.executeRequest(
           [...genres], RequestType.GET, EndPoint.MOVIE_GENRES);
-      print("Genres: ${response!.body["genres"]}");
 
-      for (var genre in response.body["genres"]) {
+      for (var genre in response!.body["genres"]) {
         if (movieModel.genre_ids.contains(genre["id"])) {
           genreChips.add(
             Chip(
@@ -97,10 +94,8 @@ class MovieProvider with ChangeNotifier {
     ApiResponse? response = await ApiService.executeRequest(
         [], RequestType.GET, EndPoint.MOVIE_UPCOMING);
 
-    print("Upcoming Movies: ${response!.body["results"]}");
-
     List<MovieModel> movieModelsList =
-        MovieModel.toList(response.body["results"]);
+        MovieModel.toList(response!.body["results"]);
 
     moviesToShowList = movieModelsList
         .map(
@@ -119,11 +114,9 @@ class MovieProvider with ChangeNotifier {
       ApiResponse? response = await ApiService.executeRequest(
           [id], RequestType.GET, EndPoint.MOVIE_TRAILER);
 
-      print("Trailer: ${response!.body["results"]}");
-
       String trailerKey = "";
 
-      for (var item in response.body["results"]) {
+      for (var item in response!.body["results"]) {
         if (item["type"] == "Trailer") {
           trailerKey = item["key"];
         }
@@ -135,13 +128,11 @@ class MovieProvider with ChangeNotifier {
   }
 
   void saveMoviesToDb() async {
-    print("Inside save function");
     final database =
         await $FloorLocalDatabase.databaseBuilder('moviesDatabase.db').build();
     final movieDao = database.movieDao;
 
     for (var movie in moviesToShowList) {
-      print("Checking ${movie.movie.original_title}");
       MovieDatabaseModel? movieModel =
           await movieDao.findMovieById(int.parse(movie.movie.id));
 
@@ -175,7 +166,6 @@ class MovieProvider with ChangeNotifier {
 
     moviesToShowList = movies.map(
       (movie) {
-        print("Found ${movie.original_title} from db");
         return MovieTitleWidget(
           movie: MovieModel(
             original_title: movie.original_title,
@@ -194,7 +184,6 @@ class MovieProvider with ChangeNotifier {
   }
 
   void getMovies() {
-    print(ConnectionUtility.connected);
     if (!ConnectionUtility.connected) {
       log("Fetching from local DB");
       getMoviesFromDb();
