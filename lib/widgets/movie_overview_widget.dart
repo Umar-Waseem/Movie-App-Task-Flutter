@@ -5,10 +5,20 @@ import 'package:provider/provider.dart';
 import '../models/movie_model.dart';
 import '../providers/movie_provider.dart';
 
-class MovieOverview extends StatelessWidget {
+class MovieOverview extends StatefulWidget {
   const MovieOverview({Key? key, required this.movie}) : super(key: key);
 
   final MovieModel movie;
+
+  @override
+  State<MovieOverview> createState() => _MovieOverviewState();
+}
+
+class _MovieOverviewState extends State<MovieOverview> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +32,13 @@ class MovieOverview extends StatelessWidget {
         ),
         16.ph,
         Consumer<MovieProvider>(
-          builder: (context, movieProvider, child) => Wrap(
-            spacing: 10,
-            children: movieProvider.genreChips,
-          ),
+          builder: (context, movieProvider, child) {
+            movieProvider.getMovieGenres(widget.movie);
+            return Wrap(
+              spacing: 10,
+              children: movieProvider.genreChips,
+            );
+          },
         ),
         30.ph,
         const Text(
@@ -34,7 +47,7 @@ class MovieOverview extends StatelessWidget {
         ),
         10.ph,
         Text(
-          movie.overview ?? "",
+          widget.movie.overview ?? "",
           style: const TextStyle(color: Colors.grey, fontSize: 16),
         ),
       ],

@@ -23,8 +23,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   void initState() {
     super.initState();
-    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    movieProvider.getMovieGenres(widget.movie);
+    
   }
 
   bool showVideo = false;
