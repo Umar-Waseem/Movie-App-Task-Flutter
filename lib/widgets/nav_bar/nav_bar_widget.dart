@@ -21,10 +21,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 20),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 15),
       decoration: const BoxDecoration(
         color: kNavBarColor,
-        borderRadius: BorderRadius.all(Radius.circular(25)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
       ),
       child: BottomNavigationBar(
         backgroundColor: Colors.transparent,

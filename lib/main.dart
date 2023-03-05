@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app_task/routes/screen_routes.dart';
+import 'package:movie_app_task/utils/connection.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/movie_provider.dart';
 import 'themes/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  ConnectionUtility.init();
+
   runApp(const MyApp());
 }
 

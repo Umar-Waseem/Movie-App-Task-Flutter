@@ -32,7 +32,7 @@ class _StartingScreenState extends State<StartingScreen>
     ).animate(_animationController);
 
     final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    movieProvider.getUpcomingMovies();
+    movieProvider.getMovies();
   }
 
   @override
@@ -65,23 +65,28 @@ class _StartingScreenState extends State<StartingScreen>
       ),
       backgroundColor: kAppBarBackgroundColor,
       body: Consumer<MovieProvider>(
-        builder: (context, movieProvider, child) => Center(
-          child: movieProvider.loading
-              ? const CupertinoActivityIndicator(
-                  animating: true,
-                  color: kNavBarColor,
-                  radius: 15,
-                )
-              : movieProvider.moviesToShowList.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "No Results Found",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+        builder: (context, movieProvider, child) => RefreshIndicator(
+          onRefresh: () async {
+            movieProvider.getMovies();
+          },
+          child: Center(
+            child: movieProvider.loading
+                ? const CupertinoActivityIndicator(
+                    animating: true,
+                    color: kNavBarColor,
+                    radius: 15,
+                  )
+                : movieProvider.moviesToShowList.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "No Results Found",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                      )
+                    : ListView(
+                        children: movieProvider.moviesToShowList,
                       ),
-                    )
-                  : ListView(
-                      children: movieProvider.moviesToShowList,
-                    ),
+          ),
         ),
       ),
       bottomSheet: const CustomNavBar(),

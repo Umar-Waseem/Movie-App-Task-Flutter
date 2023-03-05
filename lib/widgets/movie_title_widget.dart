@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movie_app_task/utils/connection.dart';
 import 'package:movie_app_task/utils/widget_extensions.dart';
 
 import '../models/movie_model.dart';
@@ -28,14 +29,18 @@ class MovieTitleWidget extends StatelessWidget {
         height: screenHeight * 0.22,
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         decoration: BoxDecoration(
-          color: movie.backdrop_path!.isNotEmpty
-              ? Colors.transparent
+          color: ConnectionUtility.connected
+              ? movie.backdrop_path!.isNotEmpty
+                  ? Colors.transparent
+                  : Colors.grey
               : Colors.grey,
-          image: movie.backdrop_path!.isNotEmpty
-              ? DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(baseImageUrl + movie.backdrop_path!),
-                )
+          image: ConnectionUtility.connected
+              ? movie.backdrop_path!.isNotEmpty
+                  ? DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(baseImageUrl + movie.backdrop_path!),
+                    )
+                  : null
               : null,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
@@ -44,7 +49,7 @@ class MovieTitleWidget extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (movie.backdrop_path!.isNotEmpty)
+            if (movie.backdrop_path!.isNotEmpty && ConnectionUtility.connected)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

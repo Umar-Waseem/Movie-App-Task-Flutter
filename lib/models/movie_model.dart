@@ -10,7 +10,7 @@ class MovieModel {
   final String? release_date;
   final String? overview;
   final String? poster_path;
-  final List<dynamic>? genre_ids;
+  final List<dynamic> genre_ids;
 
   MovieModel({
     required this.original_title,
@@ -18,7 +18,7 @@ class MovieModel {
     this.backdrop_path,
     this.release_date,
     this.overview,
-    this.genre_ids,
+    required this.genre_ids,
     this.poster_path,
   });
 
